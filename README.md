@@ -1,4 +1,4 @@
-# YOLO_Kalman
+# Monocular Vision-Based UAV Navigation for Orchard Monitoring
 
 A **YOLOv11-based inference** pipeline integrated with **Kalman filtering** for object tracking, along with **yaw and roll calculations**. This implementation supports real-time processing by replacing video input with **GStreamer output from a camera**.
 
