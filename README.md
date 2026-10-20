@@ -1,5 +1,7 @@
 # Monocular Vision-Based UAV Navigation for Orchard Monitoring
 
+[![Project page](https://img.shields.io/badge/Project-Page-4A6A15?logo=googlechrome&logoColor=white)](https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/)
+
 YOLO segmentation + Kalman tracking for tree-canopy path following. Detects canopy segments, fits a center line, and outputs **yaw/roll** commands for drone navigation.
 
 ---
@@ -25,7 +27,8 @@ YOLO segmentation + Kalman tracking for tree-canopy path following. Detects cano
 
 ```bash
 # Clone and enter project
-cd "Tree Line Follower"
+git clone https://github.com/Ritabrata-Chakraborty/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring.git
+cd Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring
 
 # Install
 pip install -r requirements.txt

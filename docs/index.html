@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Path Planning of Low-Altitude UAV for Tree Canopy Tracking and Orchard Monitoring</title>
+<meta name="description" content="Monocular vision-based treeline tracking for low-altitude UAV orchard monitoring: YOLOv11 canopy segmentation, Soft-NMS, Kalman tracking and line fitting for yaw/roll control, running onboard a Jetson Orin NX.">
+<link rel="canonical" href="https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/">
+
+<!-- Google Scholar (Highwire Press) -->
+<meta name="citation_title" content="Path Planning of Low-Altitude UAV for Tree Canopy Tracking and Orchard Monitoring">
+<meta name="citation_author" content="Kishore, Kaushal">
+<meta name="citation_author_institution" content="CSIR-Central Electronics Engineering Research Institute (CSIR-CEERI), Pilani, India">
+<meta name="citation_author" content="Chakraborty, Ritabrata">
+<meta name="citation_author_institution" content="Birla Institute of Technology and Science (BITS) Pilani, India">
+<meta name="citation_publication_date" content="2025">
+<meta name="citation_language" content="en">
+<meta name="citation_keywords" content="UAV Navigation; Computer Vision; Treeline Tracking; Precision Agriculture; Visual Servoing; Instance Segmentation; YOLOv11; Orchard Monitoring">
+<meta name="citation_abstract_html_url" content="https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/">
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Path Planning of Low-Altitude UAV for Tree Canopy Tracking and Orchard Monitoring">
+<meta property="og:description" content="YOLOv11 canopy segmentation, Soft-NMS and Kalman tracking for vision-based UAV treeline following in orchards.">
+<meta property="og:url" content="https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/">
+<meta property="og:image" content="https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/assets/val_predictions.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "Path Planning of Low-Altitude UAV for Tree Canopy Tracking and Orchard Monitoring",
+  "author": [
+    {"@type": "Person", "name": "Kaushal Kishore", "affiliation": {"@type": "Organization", "name": "CSIR-Central Electronics Engineering Research Institute (CSIR-CEERI)"}},
+    {"@type": "Person", "name": "Ritabrata Chakraborty", "affiliation": {"@type": "Organization", "name": "BITS Pilani"}}
+  ],
+  "datePublished": "2025",
+  "creativeWorkStatus": "Unpublished manuscript",
+  "funder": {"@type": "Organization", "name": "CSIR-CEERI"},
+  "inLanguage": "en",
+  "keywords": "UAV navigation, computer vision, treeline tracking, precision agriculture, visual servoing, instance segmentation",
+  "url": "https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/",
+  "isBasedOn": "https://github.com/Ritabrata-Chakraborty/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap">
+
+<style>
+:root {
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: "Inter", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --bg: #f9faf6; --fg: #1c1e18; --muted: #5d6253; --rule: #e0e3d8;
+  --card: #ffffff; --accent: #4a6a15; --accent-soft: #edf3e0; --code: #eff1e9; --head: #f2f4ec;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #13150f; --fg: #e9ebe4; --muted: #a2a796; --rule: #2b2f24;
+    --card: #1a1d15; --accent: #b5d36f; --accent-soft: #263016; --code: #1d2018; --head: #20241a;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #13150f; --fg: #e9ebe4; --muted: #a2a796; --rule: #2b2f24;
+  --card: #1a1d15; --accent: #b5d36f; --accent-soft: #263016; --code: #1d2018; --head: #20241a;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 18px/1.7 var(--serif);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+header { padding: 64px 0 34px; text-align: center; border-bottom: 1px solid var(--rule); }
+.kicker { font: 600 12px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+h1 { font-size: clamp(26px, 4.2vw, 38px); line-height: 1.18; margin: 18px auto 22px; max-width: 24em; font-weight: 700; letter-spacing: -.015em; text-wrap: balance; }
+.authors { font-size: 19px; margin: 0 0 8px; }
+.authors .name { white-space: nowrap; }
+.authors a { color: var(--fg); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+.authors a:hover { text-decoration-color: var(--accent); }
+.affil { font: 14px/1.55 var(--sans); color: var(--muted); margin: 0; }
+.citeline { font: 13px/1.5 var(--sans); color: var(--muted); margin: 14px auto 0; max-width: 46em; text-wrap: balance; }
+.citeline a { color: var(--muted); }
+.buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 28px; }
+.btn {
+  display: inline-flex; align-items: center; font: 600 14px/1 var(--sans); color: var(--bg); background: var(--fg);
+  padding: 11px 20px; border: 1px solid var(--fg); border-radius: 999px; text-decoration: none; transition: opacity .15s;
+}
+.btn.ghost { background: transparent; color: var(--fg); border-color: var(--rule); }
+.btn.ghost:hover { border-color: var(--muted); opacity: 1; }
+.btn:hover { opacity: .85; }
+section { padding: 44px 0; border-bottom: 1px solid var(--rule); }
+h2 { font: 600 12px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 0 0 20px; }
+h3 { font: 600 16px/1.4 var(--sans); margin: 32px 0 12px; }
+p { margin: 0 0 1em; }
+section > p, section li { text-align: justify; text-justify: inter-word; hyphens: auto; -webkit-hyphens: auto; }
+sub, sup { line-height: 0; }
+.keywords { font: 14px/1.6 var(--sans); color: var(--muted); margin: 0; text-align: left; hyphens: manual; }
+.keywords b { color: var(--fg); font-weight: 600; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 0; }
+.stat { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; }
+.stat b { display: block; font: 700 27px/1.15 var(--serif); color: var(--accent); white-space: nowrap; }
+.stat small { display: block; font: 13.5px/1.45 var(--sans); color: var(--muted); margin-top: 6px; }
+.note { font: 14px/1.6 var(--sans); color: var(--muted); background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 8px; padding: 12px 16px; margin: 22px 0 0; text-align: left; }
+ul.spec { margin: 0 0 1em; padding-left: 1.2em; }
+ul.spec li { margin-bottom: .35em; }
+figure { margin: 28px 0; }
+figure a { display: block; }
+figure img { width: 100%; height: auto; display: block; border-radius: 8px; background: #fff; border: 1px solid var(--rule); }
+figure.narrow { max-width: 720px; margin-left: auto; margin-right: auto; }
+figcaption { text-wrap: balance; font: 14px/1.6 var(--sans); color: var(--muted); margin: 12px auto 0; max-width: 46em; text-align: center; }
+figcaption b { color: var(--fg); }
+.table-wrap { overflow-x: auto; margin: 0 0 28px; border: 1px solid var(--rule); border-radius: 10px; background: var(--card); }
+table { width: 100%; border-collapse: collapse; font: 15px/1.45 var(--serif); }
+th, td { padding: 9px 11px; border-bottom: 1px solid var(--rule); text-align: center; vertical-align: middle; }
+thead th { background: var(--head); font-weight: 600; font-size: 14px; line-height: 1.35; color: var(--fg); }
+tbody tr:last-child td { border-bottom: 0; }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.best td { background: var(--accent-soft); }
+tr.mean td { font-weight: 600; background: var(--head); }
+.tcap { font: 14px/1.6 var(--sans); color: var(--muted); margin: 0 auto 10px; max-width: 46em; text-align: center; text-wrap: balance; }
+.tcap b { color: var(--fg); }
+.table-wrap + .tnote { margin-top: -18px; }
+.tnote { font: 13px/1.55 var(--sans); color: var(--muted); margin: 8px auto 28px; max-width: 46em; text-align: center; text-wrap: balance; }
+pre {
+  background: var(--code); border: 1px solid var(--rule); border-radius: 8px;
+  padding: 16px 18px; overflow-x: auto; font: 13px/1.6 var(--mono); margin: 0; white-space: pre;
+}
+code { font: .86em var(--mono); background: var(--code); padding: 1px 5px; border-radius: 4px; }
+.head-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.head-row h2 { margin: 0; }
+.copy { font: 600 12px/1 var(--sans); background: var(--accent-soft); color: var(--accent); border: 0; border-radius: 6px; padding: 7px 10px; cursor: pointer; }
+a { color: var(--accent); text-underline-offset: 2px; }
+footer { padding: 32px 0 56px; font: 13px/1.7 var(--sans); color: var(--muted); text-align: center; }
+@media (max-width: 760px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  body { font-size: 17px; }
+  header { padding: 40px 0 28px; }
+  section { padding: 36px 0; }
+  .stats { gap: 10px; }
+  .stat { padding: 14px; }
+  .stat b { font-size: 23px; }
+  .buttons { gap: 8px; }
+  .btn { padding: 9px 14px; font-size: 13px; }
+}
+.theme-toggle { position: fixed; top: 14px; right: 14px; z-index: 10; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 999px; border: 1px solid var(--rule); background: var(--card); color: var(--fg); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.08); transition: border-color .15s; }
+.theme-toggle:hover { border-color: var(--muted); }
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle .sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .sun { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .moon { display: none; }
+}
+</style>
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+</head>
+<body>
+<button class="theme-toggle" type="button" aria-label="Switch between light and dark theme" title="Light / dark theme" onclick="var d=document.documentElement,c=d.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'),n=c==='dark'?'light':'dark';d.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}">
+  <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+</button>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Manuscript &middot; CSIR-CEERI</div>
+    <h1>Path Planning of Low-Altitude UAV for Tree Canopy Tracking and Orchard Monitoring</h1>
+    <p class="authors">
+      <span class="name">Kaushal Kishore<sup>1</sup></span> and
+      <span class="name"><a href="https://scholar.google.com/citations?user=JikCewwAAAAJ&amp;hl=en">Ritabrata Chakraborty</a><sup>2</sup></span>
+    </p>
+    <p class="affil"><sup>1</sup>CSIR-Central Electronics Engineering Research Institute (CSIR-CEERI), Pilani, Rajasthan, India</p>
+    <p class="affil"><sup>2</sup>Birla Institute of Technology and Science (BITS)&nbsp;Pilani, Rajasthan, India</p>
+    <p class="citeline">Unpublished manuscript, 2025 &middot; Supported by CSIR-CEERI</p>
+    <div class="buttons">
+      <a class="btn" href="https://github.com/Ritabrata-Chakraborty/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring">Code</a>
+      <a class="btn ghost" href="#demo">Demo</a>
+      <a class="btn ghost" href="#citation">Cite</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="abstract">
+  <h2>Abstract</h2>
+  <p>This paper introduces a monocular vision-driven strategy for treeline tracking in orchards, capable of maintaining stability under moderate wind disturbances. In structured agricultural environments where trees are planted in parallel rows, accurate autonomous navigation is critical. Departing from conventional grid-based or path-following techniques, this research leverages instance segmentation to detect and track individual treelines with high precision. A curve-fitting algorithm constructs a navigation trajectory whose offset and slope relative to the image center determine yaw and roll adjustments, while maintaining constant pitch. The proposed approach enhances UAV stability and navigational accuracy in orchard settings, contributing to the advancement of automated agricultural systems.</p>
+  <p class="keywords"><b>Keywords:</b> UAV Navigation, Computer Vision, Treeline Tracking, Precision Agriculture, Visual Servoing, Instance Segmentation</p>
+</section>
+
+<section id="highlights">
+  <h2>Key results</h2>
+  <div class="stats">
+    <div class="stat"><b>96.5</b><small>mask mAP50 of YOLOv11 on the orchard dataset</small></div>
+    <div class="stat"><b>95.5</b><small>box mAP50, ahead of YOLACTEdge (73.2) and YOLACT++ (69.7)</small></div>
+    <div class="stat"><b>17 FPS</b><small>onboard on an NVIDIA Jetson Orin NX with TensorRT</small></div>
+    <div class="stat"><b>290</b><small>annotated images from an olive orchard in Pilani, Rajasthan</small></div>
+  </div>
+</section>
+
+<section id="demo">
+  <h2>Demo</h2>
+  <figure class="narrow">
+    <img src="assets/demo.gif" alt="Animated screen recording of the Tree Line Follower interface segmenting tree canopies in a live orchard video" width="480" height="270" loading="lazy">
+    <figcaption><b>Figure 1:</b> Tree Line Follower Interface During Live Deployment. Canopy Segments Are Detected; Clicking One Starts Tracking and Yaw/Roll Output</figcaption>
+  </figure>
+</section>
+
+<section id="method">
+  <h2>Method</h2>
+  <p>A forward-facing camera, tilted 45° downward, views the orchard from above the canopy, which avoids the occlusion and collision problems of flying below it. Each frame passes through a pipeline that runs entirely onboard the UAV:</p>
+  <ul class="spec">
+    <li><b>Instance segmentation:</b> YOLOv11 segments each treeline canopy, trained on a custom olive-orchard dataset (290 images; 255 train, 20 validation, 15 test).</li>
+    <li><b>Soft-NMS:</b> Gaussian Soft-NMS keeps closely spaced treelines as separate detections instead of merging them, which standard NMS tends to do where rows converge.</li>
+    <li><b>Tracking:</b> a Kalman filter follows the selected treeline across frames, riding out brief occlusions.</li>
+    <li><b>Navigation line:</b> the tracked mask is cleaned with morphological opening, reduced to its largest component, and a line is fitted through its row-wise centre points. This was the most stable of the four fits tested (whole-mask line, centre-point line, cubic and quadratic B-splines).</li>
+    <li><b>Control:</b> the line's horizontal offset from the image centre sets the roll command and its slope sets the yaw command, both exponentially smoothed; pitch is held constant and commands go to the PX4 autopilot.</li>
+  </ul>
+</section>
+
+<section id="results">
+  <h2>Results</h2>
+  <p class="tcap"><b>Table 1:</b> Instance Segmentation Performance on the Custom Orchard Dataset</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Model</th><th>Box mAP50</th><th>Box mAP50-95</th><th>Mask mAP50</th><th>Mask mAP50-95</th></tr></thead>
+      <tbody>
+        <tr class="best"><td>YOLOv11</td><td class="num">95.5</td><td class="num">78.5</td><td class="num">96.5</td><td class="num">71.4</td></tr>
+        <tr><td>YOLACTEdge</td><td class="num">73.17</td><td class="num">46.52</td><td class="num">75.06</td><td class="num">59.51</td></tr>
+        <tr><td>YOLACT++</td><td class="num">69.69</td><td class="num">42.58</td><td class="num">72.63</td><td class="num">54.36</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>YOLOv11 was selected for deployment and runs with TensorRT on the Jetson Orin NX at 17 FPS. Field tests over the olive orchards of Pilani showed the quadcopter generating and following navigation lines autonomously, staying stable under light wind.</p>
+
+  <figure>
+    <a href="assets/val_predictions.jpg"><img src="assets/val_predictions.jpg" alt="Grid of validation images with predicted canopy masks and boxes" width="1600" height="917" loading="lazy"></a>
+    <figcaption><b>Figure 2:</b> YOLOv11 Canopy Segmentation on Validation Images (Released Checkpoint)</figcaption>
+  </figure>
+
+  <figure class="narrow">
+    <a href="assets/mask_pr_curve.png"><img src="assets/mask_pr_curve.png" alt="Precision-recall curve for mask predictions" width="1400" height="933" loading="lazy"></a>
+    <figcaption><b>Figure 3:</b> Mask Precision–Recall Curve on the Validation Set</figcaption>
+  </figure>
+
+  <figure>
+    <a href="assets/training_curves.png"><img src="assets/training_curves.png" alt="Training and validation loss and metric curves over 100 epochs" width="1800" height="600" loading="lazy"></a>
+    <figcaption><b>Figure 4:</b> Training and Validation Losses and Metrics over 100 Epochs (YOLO11s-seg, 640 px)</figcaption>
+  </figure>
+</section>
+
+<section id="code">
+  <h2>Code</h2>
+  <p>The repository contains the inference pipeline with an interactive interface, Kalman tracking, post-processing and control modules, training and TensorRT export scripts, a Jetson Orin environment, and the trained canopy segmentation checkpoint.</p>
+<pre>git clone https://github.com/Ritabrata-Chakraborty/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring.git
+cd Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring
+pip install -r requirements.txt
+python scripts/run_inference.py --ui --video 0</pre>
+</section>
+
+<section id="citation">
+  <div class="head-row">
+    <h2>Citation</h2>
+    <button class="copy" type="button" onclick="navigator.clipboard.writeText(document.getElementById('bib').innerText).then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy BibTeX',1500)})">Copy BibTeX</button>
+  </div>
+<pre id="bib">@unpublished{kishore2025orchard,
+  title  = {Path Planning of Low-Altitude UAV for Tree Canopy Tracking
+            and Orchard Monitoring},
+  author = {Kishore, Kaushal and Chakraborty, Ritabrata},
+  note   = {Manuscript},
+  year   = {2025},
+  url    = {https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/}
+}</pre>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Code: non-commercial use only; the method is subject to intellectual property rights (see the repository)
+    &middot; <a href="https://ritabrata-chakraborty.github.io/Portfolio/">Ritabrata Chakraborty</a>
+  </div>
+</footer>
+
+</body>
+</html>
