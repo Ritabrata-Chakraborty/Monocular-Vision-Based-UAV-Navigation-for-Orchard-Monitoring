@@ -14,3 +14,6 @@ runs/
 
 # Datasets (directory and all contents recursively)
 datasets/
+
+# Unencrypted project-page source (never published)
+site/

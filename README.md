@@ -1,6 +1,6 @@
 # Monocular Vision-Based UAV Navigation for Orchard Monitoring
 
-[![Project page](https://img.shields.io/badge/Project-Page-4A6A15?logo=googlechrome&logoColor=white)](https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/) [![Paper](https://img.shields.io/badge/Paper-PDF-B31B1B?logo=googlescholar&logoColor=white)](docs/paper.pdf) [![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white)](requirements.txt) [![Jetson](https://img.shields.io/badge/Jetson-Orin%20NX-76B900?logo=nvidia&logoColor=white)](environment-jetson5.yml) [![License](https://img.shields.io/badge/License-Non--Commercial-555555)](LICENSE.md)
+[![Project page](https://img.shields.io/badge/Project-Page-4A6A15?logo=googlechrome&logoColor=white)](https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/) [![Paper](https://img.shields.io/badge/Paper-On%20Request-B31B1B?logo=googlescholar&logoColor=white)](https://drive.google.com/file/d/1CMH3KU0Kgo8L-cQNC2fqTfHuR0cpWf5W/view?usp=drive_link) [![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white)](requirements.txt) [![Jetson](https://img.shields.io/badge/Jetson-Orin%20NX-76B900?logo=nvidia&logoColor=white)](environment-jetson5.yml) [![License](https://img.shields.io/badge/License-Non--Commercial-555555)](LICENSE.md)
 
 Code for **"Path Planning of Low-Altitude UAV for Tree Canopy Tracking and Orchard Monitoring"** by Kaushal Kishore (CSIR-CEERI) and Ritabrata Chakraborty (BITS Pilani).
 
@@ -21,19 +21,7 @@ Each frame goes through five stages:
 
 ## Results
 
-<p align="center"><b>Table 1:</b> Instance Segmentation on the Olive-Orchard Dataset (290 Images, Pilani, India)</p>
-
-<div align="center">
-
-| Model | Box mAP@50 | Box mAP@50–95 | Mask mAP@50 | Mask mAP@50–95 |
-|:---:|:---:|:---:|:---:|:---:|
-| YOLACT++ | 69.69 | 42.58 | 72.63 | 54.36 |
-| YolactEdge | 73.17 | 46.52 | 75.06 | 59.51 |
-| **YOLOv11** | **95.5** | **78.5** | **96.5** | **71.4** |
-
-</div>
-
-With TensorRT on the Jetson Orin NX, the pipeline runs at 17 FPS. In field trials over the Pilani olive orchard, the quadcopter generated and followed navigation lines autonomously and stayed stable under light wind. Full details are in the [paper](docs/paper.pdf).
+On the custom olive-orchard dataset, YOLOv11 reaches a box mAP@50 of 95.5% and a mask mAP@50 of 96.5%, ahead of YolactEdge and YOLACT++, and the pipeline runs at 17 FPS on a Jetson Orin NX with TensorRT. In field trials over the Pilani olive orchard, the quadcopter generated and followed navigation lines autonomously. The full methodology and results are on the [project page](https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/) (available on request), and the paper can be [requested on Google Drive](https://drive.google.com/file/d/1CMH3KU0Kgo8L-cQNC2fqTfHuR0cpWf5W/view?usp=drive_link).
 
 ## Installation
 
@@ -117,7 +105,8 @@ Control gains (smoothing factors and camera field of view) are arguments of `con
 ├── checkpoints/             # Trained canopy segmentation model (.pt, .onnx, .engine)
 ├── datasets/canopy/         # Sample orchard flight videos
 ├── runs/segment/            # Training and validation outputs
-├── docs/                    # Project page and paper PDF
+├── docs/                    # Published project page (built by tools/build_page.py)
+├── tools/build_page.py      # Builds docs/ from the private site/ source, encrypting gated sections
 ├── requirements.txt
 └── environment-jetson5.yml
 ```
