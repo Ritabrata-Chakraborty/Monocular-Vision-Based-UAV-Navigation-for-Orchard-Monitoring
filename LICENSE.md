@@ -6,4 +6,4 @@ This project is for **personal, educational, and non-commercial use only**.
 - **No warranty.** This software is provided as-is, without warranty of any kind.
 - **Attribution.** Acknowledgment of the authors (see README) is appreciated when using or referencing this work.
 
-Use and modification may be subject to applicable intellectual property rights. See the [Intellectual property review](README.md#intellectual-property-review) in the README.
+Use and modification may be subject to applicable intellectual property rights. See the [License and Intellectual Property](README.md#license-and-intellectual-property) in the README.
