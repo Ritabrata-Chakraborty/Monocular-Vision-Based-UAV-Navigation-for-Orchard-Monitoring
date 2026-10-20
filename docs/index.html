@@ -13,9 +13,11 @@
 <meta name="citation_author_institution" content="CSIR-Central Electronics Engineering Research Institute (CSIR-CEERI), Pilani, India">
 <meta name="citation_author" content="Chakraborty, Ritabrata">
 <meta name="citation_author_institution" content="Birla Institute of Technology and Science (BITS) Pilani, India">
-<meta name="citation_publication_date" content="2025">
+<meta name="citation_publication_date" content="2026/10/20">
+<meta name="citation_online_date" content="2026/10/20">
 <meta name="citation_language" content="en">
-<meta name="citation_keywords" content="UAV Navigation; Computer Vision; Treeline Tracking; Precision Agriculture; Visual Servoing; Instance Segmentation; YOLOv11; Orchard Monitoring">
+<meta name="citation_keywords" content="Precision Agriculture; Unmanned Aerial Vehicles; Orchard Monitoring; Treeline Tracking; Instance Segmentation; YOLOv11; Soft-NMS; Kalman Filter; Visual Servoing; Edge Computing">
+<meta name="citation_pdf_url" content="https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/paper.pdf">
 <meta name="citation_abstract_html_url" content="https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/">
 
 <!-- Open Graph / social -->
@@ -35,8 +37,9 @@
     {"@type": "Person", "name": "Kaushal Kishore", "affiliation": {"@type": "Organization", "name": "CSIR-Central Electronics Engineering Research Institute (CSIR-CEERI)"}},
     {"@type": "Person", "name": "Ritabrata Chakraborty", "affiliation": {"@type": "Organization", "name": "BITS Pilani"}}
   ],
-  "datePublished": "2025",
-  "creativeWorkStatus": "Unpublished manuscript",
+  "datePublished": "2026-10-20",
+  "creativeWorkStatus": "Preprint",
+  "encoding": {"@type": "MediaObject", "encodingFormat": "application/pdf", "contentUrl": "https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/paper.pdf"},
   "funder": {"@type": "Organization", "name": "CSIR-CEERI"},
   "inLanguage": "en",
   "keywords": "UAV navigation, computer vision, treeline tracking, precision agriculture, visual servoing, instance segmentation",
@@ -131,6 +134,11 @@ pre {
   padding: 16px 18px; overflow-x: auto; font: 13px/1.6 var(--mono); margin: 0; white-space: pre;
 }
 code { font: .86em var(--mono); background: var(--code); padding: 1px 5px; border-radius: 4px; }
+.resources { display: grid; grid-template-columns: 132px 1fr; gap: 28px; align-items: start; }
+.resources a.thumb { display: block; }
+.resources img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 4px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.resources ul { margin: 0; padding-left: 1.1em; }
+.resources li { margin-bottom: .5em; }
 .head-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .head-row h2 { margin: 0; }
 .copy { font: 600 12px/1 var(--sans); background: var(--accent-soft); color: var(--accent); border: 0; border-radius: 6px; padding: 7px 10px; cursor: pointer; }
@@ -148,6 +156,7 @@ footer { padding: 32px 0 56px; font: 13px/1.7 var(--sans); color: var(--muted); 
   .stat b { font-size: 23px; }
   .buttons { gap: 8px; }
   .btn { padding: 9px 14px; font-size: 13px; }
+  .resources { grid-template-columns: 96px 1fr; gap: 18px; }
 }
 .theme-toggle { position: fixed; top: 14px; right: 14px; z-index: 10; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 999px; border: 1px solid var(--rule); background: var(--card); color: var(--fg); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.08); transition: border-color .15s; }
 .theme-toggle:hover { border-color: var(--muted); }
@@ -170,7 +179,7 @@ footer { padding: 32px 0 56px; font: 13px/1.7 var(--sans); color: var(--muted); 
 
 <header>
   <div class="wrap">
-    <div class="kicker">Manuscript &middot; CSIR-CEERI</div>
+    <div class="kicker">Preprint &middot; CSIR-CEERI</div>
     <h1>Path Planning of Low-Altitude UAV for Tree Canopy Tracking and Orchard Monitoring</h1>
     <p class="authors">
       <span class="name">Kaushal Kishore<sup>1</sup></span> and
@@ -178,9 +187,10 @@ footer { padding: 32px 0 56px; font: 13px/1.7 var(--sans); color: var(--muted); 
     </p>
     <p class="affil"><sup>1</sup>CSIR-Central Electronics Engineering Research Institute (CSIR-CEERI), Pilani, Rajasthan, India</p>
     <p class="affil"><sup>2</sup>Birla Institute of Technology and Science (BITS)&nbsp;Pilani, Rajasthan, India</p>
-    <p class="citeline">Unpublished manuscript, 2025 &middot; Supported by CSIR-CEERI</p>
+    <p class="citeline">Preprint, 20 October 2026 &middot; Supported by CSIR-CEERI, Pilani</p>
     <div class="buttons">
-      <a class="btn" href="https://github.com/Ritabrata-Chakraborty/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring">Code</a>
+      <a class="btn" href="paper.pdf">Paper (PDF)</a>
+      <a class="btn ghost" href="https://github.com/Ritabrata-Chakraborty/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring">Code</a>
       <a class="btn ghost" href="#demo">Demo</a>
       <a class="btn ghost" href="#citation">Cite</a>
     </div>
@@ -191,15 +201,15 @@ footer { padding: 32px 0 56px; font: 13px/1.7 var(--sans); color: var(--muted); 
 
 <section id="abstract">
   <h2>Abstract</h2>
-  <p>This paper introduces a monocular vision-driven strategy for treeline tracking in orchards, capable of maintaining stability under moderate wind disturbances. In structured agricultural environments where trees are planted in parallel rows, accurate autonomous navigation is critical. Departing from conventional grid-based or path-following techniques, this research leverages instance segmentation to detect and track individual treelines with high precision. A curve-fitting algorithm constructs a navigation trajectory whose offset and slope relative to the image center determine yaw and roll adjustments, while maintaining constant pitch. The proposed approach enhances UAV stability and navigational accuracy in orchard settings, contributing to the advancement of automated agricultural systems.</p>
-  <p class="keywords"><b>Keywords:</b> UAV Navigation, Computer Vision, Treeline Tracking, Precision Agriculture, Visual Servoing, Instance Segmentation</p>
+  <p>Orchards are planted in long parallel rows, so a monitoring UAV must lock onto one treeline and follow it without drifting to a neighboring row. This paper presents a monocular, onboard pipeline that does this from canopy appearance alone. A forward-facing camera tilted 45° downward feeds a YOLOv11 instance-segmentation model trained on a new olive-orchard dataset (290 annotated images captured in Pilani, India). Gaussian Soft-NMS keeps adjacent treelines as separate instances where they converge near the image edges, a Kalman filter keeps the selected row locked across frames, and a line fitted through the center points of the refined canopy mask gives the navigation line. Its horizontal offset and slope set the roll and yaw commands, while pitch is held constant. On the custom dataset, YOLOv11 reaches a box mAP@50 of 95.5% and a mask mAP@50 of 96.5%, ahead of YolactEdge and YOLACT++. With TensorRT optimization the pipeline runs at 17 frames per second on an NVIDIA Jetson Orin NX. In field tests over the Pilani olive orchard, the quadcopter generated and followed navigation lines autonomously and remained stable under small wind disturbances.</p>
+  <p class="keywords"><b>Keywords:</b> Precision Agriculture, Unmanned Aerial Vehicles (UAVs), Orchard Monitoring, Treeline Tracking, Instance Segmentation, YOLOv11, Soft-NMS, Kalman Filter, Visual Servoing, Edge Computing</p>
 </section>
 
 <section id="highlights">
   <h2>Key results</h2>
   <div class="stats">
     <div class="stat"><b>96.5</b><small>mask mAP50 of YOLOv11 on the orchard dataset</small></div>
-    <div class="stat"><b>95.5</b><small>box mAP50, ahead of YOLACTEdge (73.2) and YOLACT++ (69.7)</small></div>
+    <div class="stat"><b>95.5</b><small>box mAP50, ahead of YolactEdge (73.2) and YOLACT++ (69.7)</small></div>
     <div class="stat"><b>17 FPS</b><small>onboard on an NVIDIA Jetson Orin NX with TensorRT</small></div>
     <div class="stat"><b>290</b><small>annotated images from an olive orchard in Pilani, Rajasthan</small></div>
   </div>
@@ -233,7 +243,7 @@ footer { padding: 32px 0 56px; font: 13px/1.7 var(--sans); color: var(--muted); 
       <thead><tr><th>Model</th><th>Box mAP50</th><th>Box mAP50-95</th><th>Mask mAP50</th><th>Mask mAP50-95</th></tr></thead>
       <tbody>
         <tr class="best"><td>YOLOv11</td><td class="num">95.5</td><td class="num">78.5</td><td class="num">96.5</td><td class="num">71.4</td></tr>
-        <tr><td>YOLACTEdge</td><td class="num">73.17</td><td class="num">46.52</td><td class="num">75.06</td><td class="num">59.51</td></tr>
+        <tr><td>YolactEdge</td><td class="num">73.17</td><td class="num">46.52</td><td class="num">75.06</td><td class="num">59.51</td></tr>
         <tr><td>YOLACT++</td><td class="num">69.69</td><td class="num">42.58</td><td class="num">72.63</td><td class="num">54.36</td></tr>
       </tbody>
     </table>
@@ -256,6 +266,17 @@ footer { padding: 32px 0 56px; font: 13px/1.7 var(--sans); color: var(--muted); 
   </figure>
 </section>
 
+<section id="paper">
+  <h2>Paper</h2>
+  <div class="resources">
+    <a class="thumb" href="paper.pdf"><img src="assets/paper-thumb.png" alt="First page of the paper" width="400" height="518"></a>
+    <ul>
+      <li><a href="paper.pdf">Full paper (PDF)</a>: problem statement and system overview, the olive-orchard dataset, the segmentation, Soft-NMS, Kalman tracking and navigation-line methods, the control law, and the segmentation, runtime and field-trial results.</li>
+      <li><a href="https://github.com/Ritabrata-Chakraborty/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring">Code</a> for the full pipeline, with the trained canopy segmentation checkpoint.</li>
+    </ul>
+  </div>
+</section>
+
 <section id="code">
   <h2>Code</h2>
   <p>The repository contains the inference pipeline with an interactive interface, Kalman tracking, post-processing and control modules, training and TensorRT export scripts, a Jetson Orin environment, and the trained canopy segmentation checkpoint.</p>
@@ -270,12 +291,12 @@ python scripts/run_inference.py --ui --video 0</pre>
     <h2>Citation</h2>
     <button class="copy" type="button" onclick="navigator.clipboard.writeText(document.getElementById('bib').innerText).then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy BibTeX',1500)})">Copy BibTeX</button>
   </div>
-<pre id="bib">@unpublished{kishore2025orchard,
+<pre id="bib">@misc{kishore2026orchard,
   title  = {Path Planning of Low-Altitude UAV for Tree Canopy Tracking
             and Orchard Monitoring},
   author = {Kishore, Kaushal and Chakraborty, Ritabrata},
-  note   = {Manuscript},
-  year   = {2025},
+  note   = {Preprint},
+  year   = {2026},
   url    = {https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/}
 }</pre>
 </section>

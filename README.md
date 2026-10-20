@@ -1,6 +1,6 @@
 # Monocular Vision-Based UAV Navigation for Orchard Monitoring
 
-[![Project page](https://img.shields.io/badge/Project-Page-4A6A15?logo=googlechrome&logoColor=white)](https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/)
+[![Project page](https://img.shields.io/badge/Project-Page-4A6A15?logo=googlechrome&logoColor=white)](https://ritabrata-chakraborty.github.io/Monocular-Vision-Based-UAV-Navigation-for-Orchard-Monitoring/) [![Paper](https://img.shields.io/badge/Paper-PDF-B31B1B?logo=googlescholar&logoColor=white)](docs/paper.pdf)
 
 YOLO segmentation + Kalman tracking for tree-canopy path following. Detects canopy segments, fits a center line, and outputs **yaw/roll** commands for drone navigation.
 
